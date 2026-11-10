@@ -390,9 +390,24 @@ footer { background: var(--ink); color: var(--hero-fg); border-top: 1px solid rg
   <section class="quote" id="orcamento">
     <div class="wrap section">
       <div class="quote-box">
-        <h2 class="h2" data-t="orcTitulo">Vamos transformar sua ideia em arte?</h2>
-        <p class="lead" data-t="orcTexto">Conte sua ideia e solicite um orçamento para criar uma tatuagem única e personalizada.</p>
-        <a class="btn-wa js-wa" href="https://api.whatsapp.com/send/?phone=5534998775027&amp;text=Ol%C3%A1+Imad%21+Vim+pelo+%2ASITE%2A+e+quero+fazer+meu+or%C3%A7amento&amp;type=phone_number&amp;app_absent=0" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-wa"/></svg><span data-t="orcBotao">Solicitar Orçamento</span></a>
+        <h2 class="h2" data-t="orcTitulo">Qual o valor médio de uma tatuagem com Imad Filho?</h2>
+        <p class="lead" data-t="orcTexto">Uma tatuagem com o <strong>Imad Filho</strong> custa em média de <strong class="nw">R$1.300 a R$3.500</strong>, <strong>sessão de 6 a 10 horas</strong>. O preço pode variar por tamanho e complexidade de cada projeto!</p>
+        <p class="lead" style="margin-top:.75rem" data-t="orcVisitas">As visitas são realizadas com hora marcada pelo WhatsApp, onde alinhamos todos os detalhes.</p>
+        <p class="lead" style="max-width:none;margin-top:.75rem"><span data-t="orcSub">Solicite seu orçamento se cadastrando abaixo:</span> <svg class="arrow-down" aria-hidden="true"><use href="#i-down"/></svg></p>
+        <form class="lead-form" id="lead-form" novalidate>
+          <div class="field">
+            <label for="f-nome" data-t="fNome">Nome</label>
+            <input id="f-nome" name="nome" type="text" autocomplete="name" required maxlength="80" data-a="placeholder:fNomePh" placeholder="Seu nome completo" aria-describedby="e-nome">
+            <p class="field-err" id="e-nome" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="f-tel" data-t="fTel">Telefone / WhatsApp</label>
+            <input id="f-tel" name="telefone" type="tel" inputmode="numeric" autocomplete="tel-national" required maxlength="15" placeholder="(34) 99999-9999" aria-describedby="e-tel">
+            <p class="field-err" id="e-tel" aria-live="polite"></p>
+          </div>
+          <p class="form-ok" id="form-ok" role="status" hidden></p>
+          <button type="submit" class="btn-wa"><svg aria-hidden="true"><use href="#i-wa"/></svg><span data-t="orcBotao">Quero receber meu orçamento</span></button>
+        </form>
       </div>
     </div>
   </section>
@@ -422,6 +437,8 @@ footer { background: var(--ink); color: var(--hero-fg); border-top: 1px solid rg
    Fotos: "assets/nome.webp" (cada uma tem uma versão menor "-480" para celular).
    Avaliações: da mais recente para a mais antiga; as que têm foto aparecem primeiro. */
 const site = {
+  /* para receber os cadastros (nome/telefone) numa planilha ou CRM, cole aqui a URL de um webhook (Make, Zapier...). Vazio = não envia. */
+  webhook: "",
   whatsapp: "https://api.whatsapp.com/send/?phone=5534998775027&text=Ol%C3%A1+Imad%21+Vim+pelo+%2ASITE%2A+e+quero+fazer+meu+or%C3%A7amento&type=phone_number&app_absent=0",
   /* carrossel "Projetos recentes" — textos em TXT.*.estilos, na mesma ordem */
   estilos: [
@@ -451,6 +468,7 @@ const TXT = {
   pt: {
     lang: "pt-BR",
     desc: "Conheça o trabalho de Imad Filho, tatuador especializado em realismo preto e cinza. Tatuagens personalizadas com detalhes, textura e contraste.",
+    form: { errNome: "Digite seu nome.", errTel: "Digite um telefone válido com DDD.", ok: "Recebemos seu contato! Continue a conversa no WhatsApp que acabou de abrir." },
     rev: { tempo: (n) => n >= 12 ? `há ${Math.floor(n / 12)} ${n < 24 ? "ano" : "anos"}` : `há ${n} ${n === 1 ? "mês" : "meses"}`, mais: "Ler mais", menos: "Ler menos", googleAria: "Avaliação do Google", starsAria: "5 de 5 estrelas", foto: "Foto enviada pelo cliente na avaliação" },
     estudio: ["Estúdio climatizado com TV, frigobar, cafeteira, espelho e maca", "Área de tatuagem com maca, iluminação em trilho, sofá e cortinas pretas", "Recepção com o logo vermelho na parede, poltronas, TV e maca ao fundo", "Área de tatuagem com espelho grande, maca e sofá"],
     ampliar: "Ampliar: ",
@@ -480,6 +498,7 @@ const TXT = {
   en: {
     lang: "en",
     desc: "Discover the work of Imad Filho, a tattoo artist specializing in black and grey realism. Custom tattoos with detail, texture and contrast.",
+    form: { errNome: "Please enter your name.", errTel: "Please enter a valid phone number with area code.", ok: "We got your details! Continue the conversation in the WhatsApp chat that just opened." },
     rev: { tempo: (n) => n >= 12 ? `${Math.floor(n / 12)} year${n < 24 ? "" : "s"} ago` : `${n} month${n === 1 ? "" : "s"} ago`, mais: "Read more", menos: "Read less", googleAria: "Google review", starsAria: "5 out of 5 stars", foto: "Photo posted by the client with the review" },
     estudio: ["Air-conditioned studio with a TV, mini fridge, coffee maker, mirror and tattoo bed", "Tattoo area with a tattoo chair, track lighting, sofa and black curtains", "Reception with the red logo on the wall, armchairs, TV and a tattoo bed at the back", "Tattoo area with a large mirror, tattoo chair and sofa"],
     ampliar: "Enlarge: ",
@@ -511,20 +530,24 @@ const TXT = {
       sobre1: "My name is Imad! I've been a tattoo artist since 2019 and have specialized in black and grey realism since 2021. My focus is bringing a high-end tattoo with lots of detail, texture and contrast to your skin, so it ends up unique and striking.",
       estTitulo: "Studio",
       nota: "5.0", avBadge: "39 reviews", avTitulo: "What clients say", avLead: "Real reviews from people who got tattooed by Imad Filho, straight from Google. (Reviews shown in their original Portuguese.)", avLink: "See all reviews on Google",
-      orcTitulo: "Shall we turn your idea into art?",
-      orcTexto: "Tell us your idea and request a quote to create a unique, custom tattoo.",
-      locTitulo: "Find us", locAviso: "Visits are by appointment only.", locVerMapa: "View on Google Maps", orcBotao: "Request a quote", direitos: "All rights reserved.",
+      orcTitulo: "What is the average price of a tattoo with Imad Filho?",
+      orcTexto: 'A tattoo with <strong>Imad Filho</strong> costs on average <strong class="nw">R$1,300 to R$3,500</strong> (Brazilian reais), <strong>for a 6 to 10 hour session</strong>. The price may vary with the size and complexity of each project!',
+      orcVisitas: "Visits are by appointment, booked through WhatsApp, where we go over all the details.",
+      orcSub: "Request your quote by signing up below:",
+      fNome: "Name", fTel: "Phone / WhatsApp",
+      locTitulo: "Find us", locAviso: "Visits are by appointment only.", locVerMapa: "View on Google Maps", orcBotao: "Get my quote", direitos: "All rights reserved.",
     },
     a: {
       langAria: "Language", heroAlt: "Imad Filho focused while tattooing, in a brown tank top and black gloves",
       projetos: "Recent projects", projAnt: "Previous project", projProx: "Next project", portfolio: "Portfolio", estAria: "Studio photos", avAria: "Client reviews", avAnt: "Previous review", avProx: "Next review",
       aboutAlt: "Imad Filho in the studio, in a light T-shirt, with tattoos on his arm",
-      igAria: "Imad Filho's Instagram", lbAria: "Enlarged photo", lbFechar: "Close", lbAnt: "Previous photo", lbProx: "Next photo",
+      igAria: "Imad Filho's Instagram", fNomePh: "Your full name", lbAria: "Enlarged photo", lbFechar: "Close", lbAnt: "Previous photo", lbProx: "Next photo",
     },
   },
   es: {
     lang: "es",
     desc: "Conoce el trabajo de Imad Filho, tatuador especializado en realismo en negro y gris. Tatuajes personalizados con detalle, textura y contraste.",
+    form: { errNome: "Escribe tu nombre.", errTel: "Escribe un teléfono válido con código de área.", ok: "¡Recibimos tus datos! Continúa la conversación en el WhatsApp que se acaba de abrir." },
     rev: { tempo: (n) => n >= 12 ? `hace ${Math.floor(n / 12)} ${n < 24 ? "año" : "años"}` : `hace ${n} ${n === 1 ? "mes" : "meses"}`, mais: "Leer más", menos: "Leer menos", googleAria: "Reseña de Google", starsAria: "5 de 5 estrellas", foto: "Foto enviada por el cliente en la reseña" },
     estudio: ["Estudio climatizado con TV, minibar, cafetera, espejo y camilla", "Área de tatuaje con camilla, iluminación en riel, sofá y cortinas negras", "Recepción con el logo rojo en la pared, sillones, TV y camilla al fondo", "Área de tatuaje con espejo grande, camilla y sofá"],
     ampliar: "Ampliar: ",
@@ -556,15 +579,18 @@ const TXT = {
       sobre1: "¡Me llamo Imad! Soy tatuador desde 2019 y especialista en realismo negro y gris desde 2021. Mi enfoque es llevar a tu piel un tatuaje de alto nivel, con muchos detalles, textura y contraste, para que sea único e impactante.",
       estTitulo: "Estudio",
       nota: "5,0", avBadge: "39 reseñas", avTitulo: "Lo que dicen los clientes", avLead: "Reseñas reales de quienes ya se tatuaron con Imad Filho, directo de Google. (Reseñas en su portugués original.)", avLink: "Ver todas las reseñas en Google",
-      orcTitulo: "¿Transformamos tu idea en arte?",
-      orcTexto: "Cuéntanos tu idea y solicita un presupuesto para crear un tatuaje único y personalizado.",
-      locTitulo: "Dónde estamos", locAviso: "Las visitas se realizan con cita previa.", locVerMapa: "Ver en Google Maps", orcBotao: "Solicitar presupuesto", direitos: "Todos los derechos reservados.",
+      orcTitulo: "¿Cuál es el precio promedio de un tatuaje con Imad Filho?",
+      orcTexto: 'Un tatuaje con <strong>Imad Filho</strong> cuesta en promedio <strong class="nw">R$1.300 a R$3.500</strong> (reales brasileños), <strong>sesión de 6 a 10 horas</strong>. ¡El precio puede variar según el tamaño y la complejidad de cada proyecto!',
+      orcVisitas: "Las visitas se realizan con cita previa por WhatsApp, donde coordinamos todos los detalles.",
+      orcSub: "Solicita tu presupuesto registrándote abajo:",
+      fNome: "Nombre", fTel: "Teléfono / WhatsApp",
+      locTitulo: "Dónde estamos", locAviso: "Las visitas se realizan con cita previa.", locVerMapa: "Ver en Google Maps", orcBotao: "Quiero recibir mi presupuesto", direitos: "Todos los derechos reservados.",
     },
     a: {
       langAria: "Idioma", heroAlt: "Imad Filho concentrado mientras tatúa, con camiseta sin mangas marrón y guantes negros",
       projetos: "Proyectos recientes", projAnt: "Proyecto anterior", projProx: "Siguiente proyecto", portfolio: "Portafolio", estAria: "Fotos del estudio", avAria: "Reseñas de clientes", avAnt: "Reseña anterior", avProx: "Siguiente reseña",
       aboutAlt: "Imad Filho en el estudio, con camiseta clara y tatuajes en el brazo",
-      igAria: "Instagram de Imad Filho", lbAria: "Foto ampliada", lbFechar: "Cerrar", lbAnt: "Foto anterior", lbProx: "Foto siguiente",
+      igAria: "Instagram de Imad Filho", fNomePh: "Tu nombre completo", lbAria: "Foto ampliada", lbFechar: "Cerrar", lbAnt: "Foto anterior", lbProx: "Foto siguiente",
     },
   },
 };
@@ -725,6 +751,65 @@ $("reviews").addEventListener("click", (e) => {
   io.observe(box);
 })();
 
+/* --- Meta Pixel: Contact (lead) ---
+   Disparado no envio válido do formulário (que abre o WhatsApp) e em cliques em links do WhatsApp.
+   Envios/cliques repetidos em menos de 3 s contam uma vez só. eventID único permite deduplicar com a API de Conversões. */
+(function () {
+  let ultimo = 0;
+  window.registrarContato = function () {
+    const agora = Date.now();
+    if (agora - ultimo < 3000) return false;
+    ultimo = agora;
+    if (typeof fbq === "function") fbq("track", "Contact", { content_name: "WhatsApp - Orçamento" }, { eventID: "contact-" + agora + "-" + Math.random().toString(36).slice(2, 8) });
+    return true;
+  };
+  function clique(e) {
+    const a = e.target.closest('a[href*="whatsapp.com"], a[href*="wa.me"]');
+    if (!a || (e.type === "auxclick" && e.button !== 1)) return;
+    window.registrarContato();
+  }
+  document.addEventListener("click", clique, true);
+  document.addEventListener("auxclick", clique, true);
+})();
+
+/* --- formulário: nome + telefone (máscara BR) e envio pelo WhatsApp --- */
+(function () {
+  const form = $("lead-form"), nome = $("f-nome"), tel = $("f-tel");
+  /* (21) 3456-7890 para fixo, (21) 97472-2394 para celular */
+  function mask(v) {
+    const d = v.replace(/\D/g, "").slice(0, 11);
+    if (d.length <= 2) return d ? `(${d}` : "";
+    if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+    if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+    return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+  }
+  const telOk = (v) => { const d = v.replace(/\D/g, ""); return d[0] !== "0" && (d.length === 10 || (d.length === 11 && d[2] === "9")); };
+  const setErr = (input, msg) => { input.setAttribute("aria-invalid", msg ? "true" : "false"); $(input.getAttribute("aria-describedby")).textContent = msg; };
+  tel.addEventListener("input", () => { tel.value = mask(tel.value); if (tel.getAttribute("aria-invalid") === "true" && telOk(tel.value)) setErr(tel, ""); });
+  nome.addEventListener("input", () => { if (nome.value.trim().length >= 2) setErr(nome, ""); });
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const okN = nome.value.trim().length >= 2, okT = telOk(tel.value);
+    setErr(nome, okN ? "" : L.form.errNome); setErr(tel, okT ? "" : L.form.errTel);
+    if (!okN) return nome.focus();
+    if (!okT) return tel.focus();
+    /* toque duplo: o 2º envio em menos de 3 s não abre outro WhatsApp nem conta outro lead */
+    if (!window.registrarContato()) return;
+    const digits = tel.value.replace(/\D/g, "");
+    /* envia o cadastro para o webhook, se houver um configurado (formato de formulário, não precisa de CORS) */
+    const dados = new URLSearchParams({
+      nome: nome.value.trim(), telefone: tel.value, telefone_whatsapp: "55" + digits,
+      idioma: document.documentElement.lang, pagina: location.href,
+      /* data e hora de Brasília: 23/10/2026 16:29:05 */
+      data: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).replace(",", ""),
+    });
+    if (site.webhook) { try { fetch(site.webhook, { method: "POST", body: dados, mode: "no-cors", keepalive: true }).catch(() => {}); } catch (_) {} }
+    $("form-ok").textContent = L.form.ok; $("form-ok").hidden = false;
+    /* nome e telefone não vão no WhatsApp; ele abre com a mensagem padrão do Imad */
+    window.open(site.whatsapp, "_blank", "noopener");
+  });
+})();
+
 /* --- lightbox: portfólio (com setas) e fotos do estúdio e das avaliações (avulsas) --- */
 (function () {
   const lb = $("lb"), n = site.portfolio.length;
@@ -749,22 +834,6 @@ $("reviews").addEventListener("click", (e) => {
   });
 })();
 
-/* --- Meta Pixel: Contact (lead) ao clicar em qualquer botão/link do WhatsApp ---
-   Um único ouvinte para a página toda; cliques repetidos no mesmo botão em menos de 3 s
-   (toque duplo, clique nervoso) contam uma vez só. eventID único permite deduplicar com a API de Conversões. */
-(function () {
-  let ultimo = 0;
-  function contato(e) {
-    const a = e.target.closest('a[href*="whatsapp.com"], a[href*="wa.me"]');
-    if (!a || (e.type === "auxclick" && e.button !== 1)) return;
-    const agora = Date.now();
-    if (agora - ultimo < 3000) return;
-    ultimo = agora;
-    if (typeof fbq === "function") fbq("track", "Contact", { content_name: "WhatsApp - Solicitar Orçamento" }, { eventID: "contact-" + agora + "-" + Math.random().toString(36).slice(2, 8) });
-  }
-  document.addEventListener("click", contato, true);
-  document.addEventListener("auxclick", contato, true);
-})();
 
 </script>
 </body>
