@@ -11,6 +11,17 @@
 <meta property="og:locale" content="pt_BR">
 <meta property="og:image" content="assets/banner-imad.webp">
 <meta name="theme-color" content="#0b0b0b">
+<!-- Meta Pixel (815373507945228): PageView uma vez por carregamento; Contact nos cliques do WhatsApp (ver fim do script) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+if (!window.__imadPixel) { window.__imadPixel = true; fbq('init', '815373507945228'); fbq('track', 'PageView'); }
+</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=815373507945228&amp;ev=PageView&amp;noscript=1"></noscript>
+<!-- fim do Meta Pixel -->
 <link rel="icon" type="image/png" href="favicon.png?v=3">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
 <link rel="preload" as="image" href="assets/banner-imad.webp" imagesrcset="assets/banner-imad-800.webp 800w, assets/banner-imad.webp 1173w" imagesizes="(min-width: 768px) 56vw, 100vw" fetchpriority="high">
@@ -736,6 +747,23 @@ $("reviews").addEventListener("click", (e) => {
     else if (!single && e.key === "ArrowRight") go(cur + 1);
     else if (!single && e.key === "ArrowLeft") go(cur - 1);
   });
+})();
+
+/* --- Meta Pixel: Contact (lead) ao clicar em qualquer botão/link do WhatsApp ---
+   Um único ouvinte para a página toda; cliques repetidos no mesmo botão em menos de 3 s
+   (toque duplo, clique nervoso) contam uma vez só. eventID único permite deduplicar com a API de Conversões. */
+(function () {
+  let ultimo = 0;
+  function contato(e) {
+    const a = e.target.closest('a[href*="whatsapp.com"], a[href*="wa.me"]');
+    if (!a || (e.type === "auxclick" && e.button !== 1)) return;
+    const agora = Date.now();
+    if (agora - ultimo < 3000) return;
+    ultimo = agora;
+    if (typeof fbq === "function") fbq("track", "Contact", { content_name: "WhatsApp - Solicitar Orçamento" }, { eventID: "contact-" + agora + "-" + Math.random().toString(36).slice(2, 8) });
+  }
+  document.addEventListener("click", contato, true);
+  document.addEventListener("auxclick", contato, true);
 })();
 
 </script>
