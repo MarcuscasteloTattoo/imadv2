@@ -219,7 +219,7 @@ img { max-width: 100%; display: block; }
 .loc h2 { font-size: clamp(1.875rem, 1.5rem + 1.2vw, 2.25rem); line-height: 1.15; }
 .loc-addr { margin-top: 1.25rem; display: flex; gap: .6rem; align-items: flex-start; font-style: normal; line-height: 1.6; color: var(--muted); }
 .loc-addr svg { width: 1.25rem; height: 1.25rem; flex: none; margin-top: .15rem; color: var(--accent); }
-.loc-note { margin-top: 1.25rem; display: flex; gap: .6rem; align-items: flex-start; line-height: 1.6; color: var(--fg); font-weight: 500; }
+.loc-note { margin-top: 1rem; display: flex; gap: .6rem; align-items: flex-start; line-height: 1.6; color: var(--fg); font-weight: 500; }
 .loc-note svg { width: 1.25rem; height: 1.25rem; flex: none; margin-top: .15rem; color: var(--accent); }
 .map { position: relative; width: 100%; aspect-ratio: 4 / 3; border-radius: .75rem; overflow: hidden; background: var(--soft); border: 1px solid var(--line); }
 .map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
@@ -334,10 +334,11 @@ footer { background: var(--ink); color: var(--hero-fg); border-top: 1px solid rg
   <section class="reviews-band" id="avaliacoes">
     <div class="wrap section">
       <div style="text-align:center">
-        <a class="rev-badge" href="https://www.google.com/maps?cid=6737600034708198713" target="_blank" rel="noopener noreferrer">
+        <a class="rev-badge" href="https://www.google.com/maps/place/Imad+tattoo+-+Tatuador+em+Uberaba/@-19.7469341,-47.9567301,17z/data=!3m1!4b1!4m6!3m5!1s0x94bad12cb0b7c499:0x5d80c388c3711539!8m2!3d-19.7469341!4d-47.9567301!16s%2Fg%2F11wqr9z05m" target="_blank" rel="noopener noreferrer">
           <svg class="gl" aria-hidden="true"><use href="#i-g"/></svg>
+          <b class="rev-num" data-t="nota">5,0</b>
           <span class="stars" aria-hidden="true" id="badge-stars"></span>
-          <span data-t="avBadge">Avaliações no Google</span>
+          <span data-t="avBadge">39 avaliações</span>
         </a>
         <h2 class="h2" style="margin-top:1.25rem" data-t="avTitulo">O que dizem os clientes</h2>
         <p class="lead" data-t="avLead">Avaliações reais de quem já tatuou com o Imad Filho, direto do Google.</p>
@@ -350,7 +351,7 @@ footer { background: var(--ink); color: var(--hero-fg); border-top: 1px solid rg
         </div>
       </div>
       <div style="margin-top:2.25rem;text-align:center">
-        <a class="link" href="https://www.google.com/maps?cid=6737600034708198713" target="_blank" rel="noopener noreferrer"><span data-t="avLink">Ver todas as avaliações no Google</span><svg class="icon"><use href="#i-ext"/></svg></a>
+        <a class="link" href="https://www.google.com/maps/place/Imad+tattoo+-+Tatuador+em+Uberaba/@-19.7469341,-47.9567301,17z/data=!3m1!4b1!4m6!3m5!1s0x94bad12cb0b7c499:0x5d80c388c3711539!8m2!3d-19.7469341!4d-47.9567301!16s%2Fg%2F11wqr9z05m" target="_blank" rel="noopener noreferrer"><span data-t="avLink">Ver todas as avaliações no Google</span><svg class="icon"><use href="#i-ext"/></svg></a>
       </div>
     </div>
   </section>
@@ -359,9 +360,10 @@ footer { background: var(--ink); color: var(--hero-fg); border-top: 1px solid rg
     <div class="loc">
       <div>
         <h2 data-t="locTitulo">Onde estamos</h2>
+        <address class="loc-addr"><svg aria-hidden="true"><use href="#i-pin"/></svg><span>R. Niterói, 113 – sl 10 – Mercês<br>Uberaba – MG, 38061-360</span></address>
         <p class="loc-note"><svg aria-hidden="true"><use href="#i-clock"/></svg><span data-t="locAviso">As visitas são realizadas com hora marcada.</span></p>
       </div>
-      <div class="map" id="map" data-src="https://maps.google.com/maps?cid=6737600034708198713&amp;hl=pt-BR&amp;output=embed"><a class="map-ph" href="https://www.google.com/maps?cid=6737600034708198713" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-pin"/></svg><span data-t="locVerMapa">Ver no Google Maps</span></a></div>
+      <div class="map" id="map" data-src="https://maps.google.com/maps?cid=6737600034708198713&amp;hl=pt-BR&amp;output=embed"><a class="map-ph" href="https://www.google.com/maps/place/Imad+tattoo+-+Tatuador+em+Uberaba/@-19.7469341,-47.9567301,17z/data=!3m1!4b1!4m6!3m5!1s0x94bad12cb0b7c499:0x5d80c388c3711539!8m2!3d-19.7469341!4d-47.9567301!16s%2Fg%2F11wqr9z05m" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-pin"/></svg><span data-t="locVerMapa">Ver no Google Maps</span></a></div>
     </div>
   </section>
 
@@ -484,7 +486,7 @@ const TXT = {
       projetos: "Recent projects",
       sobre1: "My name is Imad! I've been a tattoo artist since 2019 and have specialized in black and grey realism since 2021. My focus is bringing a high-end tattoo with lots of detail, texture and contrast to your skin, so it ends up unique and striking.",
       estTitulo: "Studio",
-      avBadge: "Google reviews", avTitulo: "What clients say", avLead: "Real reviews from people who got tattooed by Imad Filho, straight from Google. (Reviews shown in their original Portuguese.)", avLink: "See all reviews on Google",
+      nota: "5.0", avBadge: "39 reviews", avTitulo: "What clients say", avLead: "Real reviews from people who got tattooed by Imad Filho, straight from Google. (Reviews shown in their original Portuguese.)", avLink: "See all reviews on Google",
       orcTitulo: "Shall we turn your idea into art?",
       orcTexto: "Tell us your idea and request a quote to create a unique, custom tattoo.",
       locTitulo: "Find us", locAviso: "Visits are by appointment only.", locVerMapa: "View on Google Maps", orcBotao: "Request a quote", direitos: "All rights reserved.",
@@ -527,7 +529,7 @@ const TXT = {
       projetos: "Proyectos recientes",
       sobre1: "¡Me llamo Imad! Soy tatuador desde 2019 y especialista en realismo negro y gris desde 2021. Mi enfoque es llevar a tu piel un tatuaje de alto nivel, con muchos detalles, textura y contraste, para que sea único e impactante.",
       estTitulo: "Estudio",
-      avBadge: "Reseñas en Google", avTitulo: "Lo que dicen los clientes", avLead: "Reseñas reales de quienes ya se tatuaron con Imad Filho, directo de Google. (Reseñas en su portugués original.)", avLink: "Ver todas las reseñas en Google",
+      nota: "5,0", avBadge: "39 reseñas", avTitulo: "Lo que dicen los clientes", avLead: "Reseñas reales de quienes ya se tatuaron con Imad Filho, directo de Google. (Reseñas en su portugués original.)", avLink: "Ver todas las reseñas en Google",
       orcTitulo: "¿Transformamos tu idea en arte?",
       orcTexto: "Cuéntanos tu idea y solicita un presupuesto para crear un tatuaje único y personalizado.",
       locTitulo: "Dónde estamos", locAviso: "Las visitas se realizan con cita previa.", locVerMapa: "Ver en Google Maps", orcBotao: "Solicitar presupuesto", direitos: "Todos los derechos reservados.",
