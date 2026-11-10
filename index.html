@@ -458,7 +458,7 @@ const site = {
   /* Estúdio: 4 fotos (cada uma com versão "-480" para celular); descrições em TXT.*.estudio */
   estudio: ["assets/estudio-1.webp", "assets/estudio-2.webp", "assets/estudio-3.webp", "assets/estudio-4.webp"],
   /* portfólio — descrições em TXT.*.portfolio, na mesma ordem (cada foto tem uma versão "-480" para celular) */
-  portfolio: ["02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"].map((n) => `assets/imad-${n}.webp`),
+  portfolio: ["03", "04", "05", "06", "07", "08", "09", "10", "11", "12"].map((n) => `assets/imad-${n}.webp`),
 };
 
 /* ============ TEXTOS (PT / EN / ES) ============
@@ -478,7 +478,6 @@ const TXT = {
       ["Perna fechada", "Dragão em escamas detalhadas na coxa, com cavaleiro e lobo acorrentado na panturrilha.", "Perna fechada com dragão na coxa e cavaleiro com lobo acorrentado na panturrilha"],
     ],
     portfolio: [
-      "Jesus com coroa de espinhos e pomba no antebraço",
       "Samurai com katana diante de um templo japonês, no braço",
       "Nossa Senhora e São Miguel Arcanjo em braço fechado",
       "Hércules com a pele do leão e grega, no braço",
@@ -506,7 +505,6 @@ const TXT = {
       ["Leg sleeve", "A finely scaled dragon on the thigh, with a knight and a chained wolf on the calf.", "Leg sleeve with a dragon on the thigh and a knight with a chained wolf on the calf"],
     ],
     portfolio: [
-      "Jesus with a crown of thorns and a dove on the forearm",
       "Samurai with a katana in front of a Japanese temple, on the arm",
       "Virgin Mary and Saint Michael the Archangel sleeve",
       "Hercules wearing the lion skin, with a Greek key pattern, on the arm",
@@ -553,7 +551,6 @@ const TXT = {
       ["Pierna completa", "Dragón con escamas detalladas en el muslo, con caballero y lobo encadenado en la pantorrilla.", "Pierna completa con dragón en el muslo y caballero con lobo encadenado en la pantorrilla"],
     ],
     portfolio: [
-      "Jesús con corona de espinas y paloma en el antebrazo",
       "Samurái con katana frente a un templo japonés, en el brazo",
       "Virgen María y San Miguel Arcángel en manga completa",
       "Hércules con la piel del león y greca, en el brazo",
@@ -601,10 +598,15 @@ function photo(src, alt, sizes, lazy = true) {
 }
 
 /* --- render --- */
+/* letreiro: só as repetições que a tela precisa (no iPhone uma faixa larga demais, ~18 mil px, some no Safari) */
 function renderMarquee() {
-  const w = [...L.marquee, ...L.marquee, ...L.marquee, ...L.marquee];
-  $("marquee").innerHTML = w.map((x) => `<span>${esc(x)} <b>•</b></span>`).join("");
+  const el = $("marquee"), um = L.marquee.map((x) => `<span>${esc(x)} <b>•</b></span>`).join("");
+  el.innerHTML = um;
+  const k = Math.max(1, Math.ceil(innerWidth / Math.max(el.scrollWidth, 1)));
+  el.innerHTML = um.repeat(k * 2); /* duas metades iguais: a animação anda 50% e emenda sem pulo */
 }
+let _mqW = innerWidth;
+addEventListener("resize", () => { if (Math.abs(innerWidth - _mqW) > 80) { _mqW = innerWidth; renderMarquee(); } });
 function renderCarousel() {
   const card = (e, i) => { const [tit, txt, alt] = L.estilos[i]; return `<article class="style-card">${photo(e.img, alt, "(min-width: 640px) 19rem, 15rem")}<h3>${esc(tit)}</h3><p>${esc(txt)}</p></article>`; };
   $("car-track").innerHTML = [0, 1, 2, 3].map((c) => `<div class="car-copy"${c ? ' aria-hidden="true"' : ""}>${site.estilos.map(card).join("")}</div>`).join("");
